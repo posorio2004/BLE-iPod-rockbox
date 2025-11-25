@@ -11,7 +11,6 @@
 __pycache__
 .DS_STORE
 
-/.vscode*
 
 # Intermediate language files
 /apps/lang/*.update
@@ -318,3 +317,4 @@ __pycache__
 
 # /utils/time-sync/
 /utils/time-sync/time-sync
+.vscode/settings.json

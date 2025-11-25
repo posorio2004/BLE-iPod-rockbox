@@ -42,16 +42,37 @@
 /*    Custom BLEiPodV2 MENU            */
 
 
+static char *  get_bluetooth_power_status_text(int selected_item, void * data, char * buffer, size_t buffer_len){
+    int ble_mode = ble_get_power_status();
+    (void) data;
+    (void) selected_item;
+
+    snprintf(buffer, buffer_len, "%s", ble_mode ? "Disable Bluetooth" : "Enable Bluetooth");
+    return buffer;
+}
+
+static char *  get_bluetooth_search_status_text(int selected_item, void * data, char * buffer, size_t buffer_len){
+    int ble_mode = ble_get_scanning_status();
+    (void) data;
+    (void) selected_item;
+
+    snprintf(buffer, buffer_len, "%s", ble_mode ? "Stop Searching" : "Start Searching");
+    return buffer;
+}
 
 
+MENUITEM_FUNCTION_DYNTEXT(enable_bluetooth_scanning_toggle, 0, (void*) ble_toggle_scanning, get_bluetooth_search_status_text, NULL, NULL, NULL, Icon_NOICON);
+MENUITEM_FUNCTION_DYNTEXT(enable_bluetooth_power_toggle, 0, (void*) ble_toggle_enable, get_bluetooth_power_status_text, NULL, NULL, NULL, Icon_NOICON);
 
 
+MENUITEM_STRINGLIST(ble_devices_list, "Found Devices", NULL, 
+    devices.device_names[0], devices.device_names[1], 
+    devices.device_names[2], devices.device_names[3],
+    devices.device_names[4], devices.device_names[5], 
+    devices.device_names[6], devices.device_names[7], 
+    devices.device_names[8], devices.device_names[9]);
 
-
-
-MENUITEM_STRINGLIST(ble_devices_list, "Scan for Devices", NULL, devices.device_names[0], devices.device_names[1], devices.device_names[2], devices.device_names[3],devices.device_names[4], devices.device_names[5], devices.device_names[6],devices.device_names[7], devices.device_names[8], devices.device_names[9]);
-
-MAKE_MENU(ble_settings, ID2P(BLE_FOUND_DEVICES), 0, Icon_Playback_menu, &ble_devices_list);
+MAKE_MENU(ble_settings, ID2P(BLE_MENU_TITLE), 0, Icon_Playback_menu, &enable_bluetooth_power_toggle, &enable_bluetooth_scanning_toggle, &ble_devices_list);
 
 
 
