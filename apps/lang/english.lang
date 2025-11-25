@@ -17054,3 +17054,31 @@
     *: "sort playlists"
   </voice>
 </phrase>
+<phrase>
+  id: BLE_MENU_TITLE
+  desc: bluetooth menu title
+  user: core
+  <source>
+    *: "Bluetooth Settings"
+  </source>
+  <dest>
+    *: "Bluetooth Settings"
+  </dest>
+  <voice>
+    *: "Bluetooth Settings"
+  </voice>
+</phrase>
+<phrase>
+  id: BLE_FOUND_DEVICES
+  desc: bluetooth list found devices 
+  user: core
+  <source>
+    *: "Found Devices"
+  </source>
+  <dest>
+    *: "Found Devices"
+  </dest>
+  <voice>
+    *: "Found Devices"
+  </voice>
+</phrase>

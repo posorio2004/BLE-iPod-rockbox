@@ -27,3 +27,6 @@ void iap_handlepkt_mode4(const unsigned int len, const unsigned char *buf);
 #if CONFIG_TUNER
 void iap_handlepkt_mode7(const unsigned int len, const unsigned char *buf);
 #endif
+#ifdef BLEiPodV2
+void iap_handlepkt_mode8(const unsigned int len, const unsigned char *buf);
+#endif

@@ -11,6 +11,8 @@
 __pycache__
 .DS_STORE
 
+/.vscode*
+
 # Intermediate language files
 /apps/lang/*.update
 /apps/lang/*.new

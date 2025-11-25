@@ -272,3 +272,7 @@
 
 /* Define this if a programmable hotkey is mapped */
 #define HAVE_HOTKEY
+
+
+/* Define this if BLEiPodV2 PCB is installed*/
+#define BLEiPodV2

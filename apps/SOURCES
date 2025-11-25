@@ -308,3 +308,9 @@ keymaps/keymap-rgnano.c
 #elif CONFIG_KEYPAD == CTRU_PAD
 keymaps/keymap-ctru.c
 #endif
+
+
+#ifdef BLEiPodV2
+ble_ipod.c
+menus/ble_menu.c
+#endif
