@@ -5,14 +5,14 @@
 
 
 
-typedef struct devices {
+typedef struct ble_devices {
     //10 32 byte names
     char device_names[MAX_ENTRIES][NAME_LENGTH];
     int num_of_devices;
 
 }  ble_devices_list_t;
 
-extern ble_devices_list_t devices;
+extern ble_devices_list_t ble_devices;
 
 
 

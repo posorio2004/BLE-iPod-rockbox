@@ -1318,6 +1318,10 @@ void iap_handlepkt(void)
 #if CONFIG_TUNER
         case 7: iap_handlepkt_mode7(length, iap_rxstart+2); break;
 #endif
+
+#ifdef BLEiPodV2
+        case 8: iap_handlepkt_mode8(length, iap_rxstart+2); break;
+#endif
         }
     }
 

@@ -23,6 +23,10 @@
 #include "iap-core.h"
 #include "iap-lingo.h"
 
+#include "ble_ipod.h"
+#include <string.h>
+#include <stdlib.h>
+
 /*
  * This macro is meant to be used inside an IAP mode message handler.
  * It is passed the expected minimum length of the message buffer.
@@ -46,26 +50,13 @@
 
 static void cmd_ack(const unsigned char cmd, const unsigned char status)
 {
-    IAP_TX_INIT(0x03, 0x00);
+    IAP_TX_INIT(0x08, 0x00);
     IAP_TX_PUT(status);
     IAP_TX_PUT(cmd);
 
     iap_send_tx();
 }
 
-/* returns record status */
-bool iap_record(bool onoff)
-{
-    if (!DEVICE_LINGO_SUPPORTED(0x01))
-        return false;
-
-    /* iPodModeChange */
-    IAP_TX_INIT(0x01, 0x06);
-    IAP_TX_PUT(onoff ? 0x00 : 0x01);
-    iap_send_tx();
-
-    return onoff;
-}
 
 void iap_handlepkt_mode8(const unsigned int len, const unsigned char *buf)
 {
@@ -74,29 +65,40 @@ void iap_handlepkt_mode8(const unsigned int len, const unsigned char *buf)
     /* Lingo 0x08 commands are at least 2 bytes in length */
     CHECKLEN(2);
 
-    /* Lingo 0x01 must have been negotiated */
-    if (!DEVICE_LINGO_SUPPORTED(0x01)) {
+    /* Lingo 0x08 must have been negotiated */
+    if (!DEVICE_LINGO_SUPPORTED(0x08)) {
         cmd_ack(cmd, IAP_ACK_BAD_PARAM);
         return;
     }
 
     /* Authentication required for all commands */
-    CHECKAUTH;
+    // CHECKAUTH;
 
     switch (cmd)
     {
+        //     0x10 - Found Newly Scanned Device
+        //     - Parameter: String Length      1 byte
+        //     - Parameters: Device Name       N bytes
+        case 0x10:
+            CHECKLEN(4);
+
+            ble_devices.num_of_devices++;
+            memmove(&ble_devices.device_names[ble_devices.num_of_devices], &buf[3], buf[2]); //Copy buf[2] bytes from buffer to struct
+            
+            //Send ACK
+            IAP_TX_INIT(0x08, 0xFF);
+            iap_send_tx();
+        break;
 
 
 
 
-
-        case 
-
+  
 
         /*
           Scan for devices
-
         */
+
 
 
 
@@ -112,7 +114,11 @@ void iap_handlepkt_mode8(const unsigned int len, const unsigned char *buf)
          */
 
         /* BeginPlayback (0x02) Deprecated
-         *
+         *#define IAP_TX_INIT(lingo, command) do { \
+        iap_txnext = iap_txpayload; \
+        IAP_TX_PUT((lingo)); \
+        IAP_TX_PUT((command)); \
+        } while (0)
          * Sent from the iPod to the device
          */
 

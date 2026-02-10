@@ -313,4 +313,5 @@ keymaps/keymap-ctru.c
 #ifdef BLEiPodV2
 ble_ipod.c
 menus/ble_menu.c
+iap/iap-lingo8.c
 #endif

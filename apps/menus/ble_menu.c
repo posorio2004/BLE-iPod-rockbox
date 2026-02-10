@@ -66,11 +66,11 @@ MENUITEM_FUNCTION_DYNTEXT(enable_bluetooth_power_toggle, 0, (void*) ble_toggle_e
 
 
 MENUITEM_STRINGLIST(ble_devices_list, "Found Devices", NULL, 
-    devices.device_names[0], devices.device_names[1], 
-    devices.device_names[2], devices.device_names[3],
-    devices.device_names[4], devices.device_names[5], 
-    devices.device_names[6], devices.device_names[7], 
-    devices.device_names[8], devices.device_names[9]);
+    ble_devices.device_names[0], ble_devices.device_names[1], 
+    ble_devices.device_names[2], ble_devices.device_names[3],
+    ble_devices.device_names[4], ble_devices.device_names[5], 
+    ble_devices.device_names[6], ble_devices.device_names[7], 
+    ble_devices.device_names[8], ble_devices.device_names[9]);
 
 MAKE_MENU(ble_settings, ID2P(BLE_MENU_TITLE), 0, Icon_Playback_menu, &enable_bluetooth_power_toggle, &enable_bluetooth_scanning_toggle, &ble_devices_list);
 
