@@ -76,10 +76,10 @@ void iap_handlepkt_mode8(const unsigned int len, const unsigned char *buf)
 
     switch (cmd)
     {
-        //     0x10 - Found Newly Scanned Device
+        //     0x04 - Found Newly Scanned Device
         //     - Parameter: String Length      1 byte
         //     - Parameters: Device Name       N bytes
-        case 0x10:
+        case 0x04:
             CHECKLEN(4);
 
             ble_devices.num_of_devices++;
@@ -92,143 +92,6 @@ void iap_handlepkt_mode8(const unsigned int len, const unsigned char *buf)
 
 
 
-
-  
-
-        /*
-          Scan for devices
-        */
-
-
-
-
-
-        /* BeginRecord (0x00) Deprecated
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* EndRecord (0x01) Deprecated
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* BeginPlayback (0x02) Deprecated
-         *#define IAP_TX_INIT(lingo, command) do { \
-        iap_txnext = iap_txpayload; \
-        IAP_TX_PUT((lingo)); \
-        IAP_TX_PUT((command)); \
-        } while (0)
-         * Sent from the iPod to the device
-         */
-
-        /* EndPlayback (0x03) Deprecated
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* ACK (0x04)
-         *
-         * The device sends an ACK response when a command
-         * that does not return any data has completed.
-         *
-         * Packet format (offset in buf[]: Description)
-         * 0x00: Lingo ID: Microphone Lingo, always 0x01
-         * 0x01: Command, always 0x04
-         * 0x02: The command result status
-         * 0x03: The ID of the command for which the
-         *       response is being sent
-         *
-         * Returns: (none)
-         */
-        case 0x04:
-#ifdef LOGF_ENABLE
-            if (buf[2] != 0x00)
-                logf("iap: Mode1 Command ACK error: "
-                            "0x%02x 0x%02x", buf[2], buf[3]);
-#endif
-            break;
-
-        /* GetDevAck (0x05)
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* iPodModeChange (0x06)
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* GetDevCaps (0x07)
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* RetDevCaps (0x08)
-         *
-         * The microphone device returns the payload
-         * indicating which capabilities it supports.
-         *
-         * Packet format (offset in buf[]: Description)
-         * 0x00: Lingo ID: Microphone Lingo, always 0x01
-         * 0x01: Command, always 0x08
-         * 0x02: Device capabilities (bits 31:24)
-         * 0x03: Device capabilities (bits 23:16)
-         * 0x04: Device capabilities (bits 15:8)
-         * 0x05: Device capabilities (bits 7:0)
-         *
-         * Returns:
-         * SetDevCtrl, sets stereo line input when supported
-         */
-        case 0x08:
-            CHECKLEN(6);
-
-            if ((buf[5] & 3) == 3) {
-                /* SetDevCtrl, set stereo line-in */
-                IAP_TX_INIT(0x01, 0x0B);
-                IAP_TX_PUT(0x01);
-                IAP_TX_PUT(0x01);
-
-                iap_send_tx();
-            }
-
-            /* TODO?: configure recording level/limiter controls
-               when supported by the device */
-
-            break;
-
-        /* GetDevCtrl (0x09)
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* RetDevCaps (0x0A)
-         *
-         * The device returns the current control state
-         * for the specified control type.
-         *
-         * Packet format (offset in buf[]: Description)
-         * 0x00: Lingo ID: Microphone Lingo, always 0x01
-         * 0x01: Command, always 0x0A
-         * 0x02: The control type
-         * 0x03: The control data
-         */
-        case 0x0A:
-            switch (buf[2])
-            {
-                case 0x01:  /* stereo/mono line-in control */
-                case 0x02:  /* recording level control */
-                case 0x03:  /* recording level limiter control */
-                    break;
-            }
-            break;
-
-        /* SetDevCtrl (0x0B)
-         *
-         * Sent from the iPod to the device
-         */
-
-        /* The default response is IAP_ACK_BAD_PARAM */
         default:
         {
 #ifdef LOGF_ENABLE
